@@ -9,14 +9,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 async function loadPrinters() {
-  const url =
-    "https://wepanow.com/utils/get-near-kiosks/?" +
-    new URLSearchParams({
-      latitude: UMD_LAT,
-      longitude: UMD_LON,
-      radius: 5
-    });
-
   try {
     const res = await fetch("wepa_kiosks.json");
     const data = await res.json();
@@ -24,26 +16,33 @@ async function loadPrinters() {
     console.log(data);
 
     data.forEach(printer => {
-      const lat = printer.latitude || printer.lat;
-      const lon = printer.longitude || printer.lng || printer.lon;
+      const lat = printer.lat;
+      const lon = printer.lng;
 
       if (!lat || !lon) return;
 
-      const name = printer.name || printer.location || "WEPA Printer";
-      const status = printer.status || "Unknown";
+      const name = printer.shortName || "WEPA Printer";
+      const location = printer.location || "Unknown location";
+      const building = printer.building || "Unknown building";
+      const status = printer.status || "Unknown status";
+      const description = printer.description || "No description available";
 
       L.marker([lat, lon])
-        .addTo(map)
-        .bindPopup(`
-          <strong>${name}</strong><br>
-          WEPA status: ${status}<br>
-          Student notes: coming soon
-        `);
+      .addTo(map)
+      .bindPopup(`
+        <strong>${name}</strong><br>
+        <strong>Building:</strong> ${building}<br>
+        <strong>Location:</strong> ${location}<br>
+        <strong>Status:</strong> ${status}<br>
+        <em>${description}</em>
+        <hr>
+        <strong>Student notes:</strong> coming soon
+      `);
     });
   } catch (err) {
     console.error("Could not load printer data:", err);
     document.getElementById("info").innerHTML +=
-      "<p><strong>Could not load live WEPA data.</strong> This may be a CORS issue.</p>";
+      "<p><strong>Printer data failed</strong> Check formatting/console, doofus.</p>";
   }
 }
 

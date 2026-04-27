@@ -18,7 +18,7 @@ async function loadPrinters() {
     });
 
   try {
-    const res = await fetch(url);
+    const res = await fetch("wepa_kiosks.json");
     const data = await res.json();
 
     console.log(data);

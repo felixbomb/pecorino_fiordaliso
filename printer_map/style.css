@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+}
+
+header {
+  padding: 1rem;
+  background: #222;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  margin-bottom: 0;
+}
+
+#map {
+  height: 70vh;
+  width: 100%;
+}
+
+#info {
+  padding: 1rem;
+}
